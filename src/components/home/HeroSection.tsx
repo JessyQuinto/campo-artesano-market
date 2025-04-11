@@ -5,53 +5,53 @@ import { ChevronRight } from 'lucide-react';
 
 const HeroSection: React.FC = () => {
   return (
-    <div className="relative bg-gradient-to-b from-choco-light to-white overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <div className="relative z-10 pb-8 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
-          <main className="pt-10 mx-auto max-w-7xl px-4 sm:pt-12 sm:px-6 md:pt-16 lg:pt-20 lg:px-8 xl:pt-28">
-            <div className="sm:text-center lg:text-left">
-              <h1 className="text-4xl tracking-tight font-bold text-choco-dark sm:text-5xl md:text-6xl">
-                <span className="block text-choco-green xl:inline">Tesoros ancestrales</span>{' '}
-                <span className="block text-choco-blue xl:inline">del Pacífico colombiano</span>
-              </h1>
-              <p className="mt-3 text-base text-gray-700 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                Descubre productos artesanales auténticos, hechos a mano por artesanos del Chocó que mantienen vivas tradiciones ancestrales y la riqueza cultural afrocolombiana.
-              </p>
-              <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
-                <div className="rounded-md shadow">
-                  <Link
-                    to="/productos"
-                    className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-choco-green hover:bg-opacity-90 md:py-4 md:text-lg md:px-10"
-                  >
-                    Ver productos
-                  </Link>
-                </div>
-                <div className="mt-3 sm:mt-0 sm:ml-3">
-                  <Link
-                    to="/artesanos"
-                    className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-choco-green bg-white hover:bg-choco-cream md:py-4 md:text-lg md:px-10"
-                  >
-                    Conoce artesanos
-                    <ChevronRight className="ml-1 h-5 w-5" />
-                  </Link>
-                </div>
-              </div>
+    <div className="relative min-h-[85vh] flex items-center bg-gradient-to-b from-choco-light to-white overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute top-20 left-20 h-40 w-40 bg-choco-gold opacity-20 rounded-full blur-2xl"></div>
+      <div className="absolute bottom-20 right-20 h-64 w-64 bg-choco-green opacity-10 rounded-full blur-3xl"></div>
+      
+      <div className="container-custom relative z-10 py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-6 text-center lg:text-left">
+            <h1 className="text-5xl lg:text-6xl font-bold mb-6">
+              <span className="block text-choco-green animate-fade-in">Tesoros del Chocó</span>
+              <span className="block text-choco-blue mt-2">Artesanía con Historia</span>
+            </h1>
+            
+            <p className="text-lg text-gray-700 mb-8 max-w-lg mx-auto lg:mx-0">
+              Descubre la riqueza cultural del Pacífico colombiano a través de productos artesanales auténticos, creados por manos que preservan tradiciones ancestrales.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
+              <Link
+                to="/productos"
+                className="btn-primary text-lg px-8 py-3 rounded-lg flex items-center justify-center"
+              >
+                Explorar Productos
+              </Link>
+              <Link
+                to="/artesanos"
+                className="btn-outline text-lg px-8 py-3 rounded-lg flex items-center justify-center"
+              >
+                Conoce los Artesanos
+                <ChevronRight className="ml-1 h-5 w-5" />
+              </Link>
             </div>
-          </main>
+          </div>
+          
+          <div className="lg:col-span-6 relative">
+            <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-xl animate-float">
+              <div className="absolute inset-0 bg-gradient-to-r from-choco-brown/30 to-transparent z-10"></div>
+              <img
+                className="h-full w-full object-cover"
+                src="https://images.unsplash.com/photo-1590856029826-c7a73142bbf1?q=80&w=2073&auto=format&fit=crop"
+                alt="Artesanía del Chocó"
+              />
+            </div>
+            <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-choco-blue opacity-20 rounded-full blur-xl"></div>
+          </div>
         </div>
       </div>
-      <div className="hidden lg:block lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-        <div className="absolute inset-0 bg-gradient-to-r from-white to-transparent z-10"></div>
-        <img
-          className="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full"
-          src="https://images.unsplash.com/photo-1590856029826-c7a73142bbf1?q=80&w=2073&auto=format&fit=crop"
-          alt="Artesano chocoano trabajando"
-        />
-      </div>
-      
-      {/* Decorative elements */}
-      <div className="absolute bottom-0 left-0 h-20 w-20 bg-choco-gold opacity-20 rounded-full blur-xl"></div>
-      <div className="absolute top-20 right-1/4 h-32 w-32 bg-choco-blue opacity-10 rounded-full blur-xl"></div>
     </div>
   );
 };
