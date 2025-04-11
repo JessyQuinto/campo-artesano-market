@@ -1,7 +1,8 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { X } from 'lucide-react';
 import { useTutorial } from '@/hooks/useTutorial';
+import { createPortal } from 'react-dom';
 
 const TutorialSteps: React.FC = () => {
   const { 
@@ -13,8 +14,9 @@ const TutorialSteps: React.FC = () => {
     skipTutorial
   } = useTutorial();
   
-  const [position, setPosition] = useState({ top: 0, left: 0 });
-  const [arrowPosition, setArrowPosition] = useState('bottom');
+  const [tooltipStyle, setTooltipStyle] = useState({});
+  const [arrowStyle, setArrowStyle] = useState({});
+  const tooltipRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
     if (!isActive || steps.length === 0) return;
@@ -26,69 +28,147 @@ const TutorialSteps: React.FC = () => {
       const targetElement = document.querySelector(step.target);
       if (!targetElement) return;
       
-      const rect = targetElement.getBoundingClientRect();
-      const windowWidth = window.innerWidth;
-      const windowHeight = window.innerHeight;
+      const targetRect = targetElement.getBoundingClientRect();
+      const tooltipRect = tooltipRef.current?.getBoundingClientRect();
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
       
-      // Determine optimal position for tooltip
-      let newPosition = { top: 0, left: 0 };
-      let newArrowPosition = step.placement || 'bottom';
+      // Default offset from target
+      const offset = 15;
       
-      // Default positioning based on placement
-      switch (newArrowPosition) {
+      // Default tooltip and arrow position
+      let newTooltipStyle = {};
+      let newArrowStyle = {};
+      
+      // Calculate best placement based on available space
+      const placement = step.placement || calculateBestPlacement(targetRect, tooltipRect, viewportWidth, viewportHeight);
+      
+      switch (placement) {
         case 'top':
-          newPosition = {
-            top: rect.bottom + window.scrollY + 15,
-            left: rect.left + window.scrollX + rect.width / 2
+          newTooltipStyle = {
+            left: `${targetRect.left + targetRect.width / 2}px`,
+            top: `${targetRect.top - offset}px`,
+            transform: 'translate(-50%, -100%)'
+          };
+          newArrowStyle = {
+            left: '50%',
+            top: '100%',
+            transform: 'translate(-50%, -50%) rotate(45deg)'
           };
           break;
         case 'bottom':
-          newPosition = {
-            top: rect.top + window.scrollY - 15,
-            left: rect.left + window.scrollX + rect.width / 2
+          newTooltipStyle = {
+            left: `${targetRect.left + targetRect.width / 2}px`,
+            top: `${targetRect.bottom + offset}px`,
+            transform: 'translate(-50%, 0)'
+          };
+          newArrowStyle = {
+            left: '50%',
+            top: '0',
+            transform: 'translate(-50%, -50%) rotate(45deg)'
           };
           break;
         case 'left':
-          newPosition = {
-            top: rect.top + window.scrollY + rect.height / 2,
-            left: rect.right + window.scrollX + 15
+          newTooltipStyle = {
+            left: `${targetRect.left - offset}px`,
+            top: `${targetRect.top + targetRect.height / 2}px`,
+            transform: 'translate(-100%, -50%)'
+          };
+          newArrowStyle = {
+            left: '100%',
+            top: '50%',
+            transform: 'translate(-50%, -50%) rotate(45deg)'
           };
           break;
         case 'right':
-          newPosition = {
-            top: rect.top + window.scrollY + rect.height / 2,
-            left: rect.left + window.scrollX - 15
+          newTooltipStyle = {
+            left: `${targetRect.right + offset}px`,
+            top: `${targetRect.top + targetRect.height / 2}px`,
+            transform: 'translate(0, -50%)'
+          };
+          newArrowStyle = {
+            left: '0',
+            top: '50%',
+            transform: 'translate(-50%, -50%) rotate(45deg)'
           };
           break;
-        case 'center':
-          newPosition = {
-            top: rect.top + window.scrollY + rect.height / 2,
-            left: rect.left + window.scrollX + rect.width / 2
-          };
-          break;
-        default:
-          newPosition = {
-            top: rect.bottom + window.scrollY + 15,
-            left: rect.left + window.scrollX + rect.width / 2
-          };
-          newArrowPosition = 'top';
       }
       
-      setPosition(newPosition);
-      setArrowPosition(newArrowPosition);
+      // Ensure tooltip stays within viewport
+      const tooltipWidth = tooltipRect?.width || 300;
+      const tooltipHeight = tooltipRect?.height || 200;
+      
+      // Adjust horizontal position if needed
+      if (placement === 'top' || placement === 'bottom') {
+        const tooltipLeft = (targetRect.left + targetRect.width / 2) - (tooltipWidth / 2);
+        if (tooltipLeft < 10) {
+          newTooltipStyle = {
+            ...newTooltipStyle,
+            left: '10px',
+            transform: 'translate(0, ' + (placement === 'top' ? '-100%' : '0') + ')'
+          };
+          newArrowStyle = {
+            ...newArrowStyle,
+            left: `${targetRect.left + targetRect.width / 2 - 10}px`,
+            transform: 'translate(-50%, -50%) rotate(45deg)'
+          };
+        } else if (tooltipLeft + tooltipWidth > viewportWidth - 10) {
+          newTooltipStyle = {
+            ...newTooltipStyle,
+            left: `${viewportWidth - tooltipWidth - 10}px`,
+            transform: 'translate(0, ' + (placement === 'top' ? '-100%' : '0') + ')'
+          };
+          newArrowStyle = {
+            ...newArrowStyle,
+            left: `${targetRect.left + targetRect.width / 2 - (viewportWidth - tooltipWidth - 10)}px`,
+          };
+        }
+      }
+      
+      setTooltipStyle(newTooltipStyle);
+      setArrowStyle(newArrowStyle);
       
       // Ensure target element is visible
       targetElement.scrollIntoView({
         behavior: 'smooth',
-        block: 'center'
+        block: 'center',
+        inline: 'center'
       });
+    };
+    
+    // Calculate best placement based on available space
+    const calculateBestPlacement = (targetRect: DOMRect, tooltipRect: DOMRect | undefined, viewportWidth: number, viewportHeight: number) => {
+      const tooltipWidth = tooltipRect?.width || 300;
+      const tooltipHeight = tooltipRect?.height || 200;
+      
+      // Check if there's enough space in each direction
+      const spaceTop = targetRect.top;
+      const spaceBottom = viewportHeight - targetRect.bottom;
+      const spaceLeft = targetRect.left;
+      const spaceRight = viewportWidth - targetRect.right;
+      
+      // Find the direction with the most space
+      const maxSpace = Math.max(spaceTop, spaceBottom, spaceLeft, spaceRight);
+      
+      if (maxSpace === spaceTop && spaceTop > tooltipHeight) return 'top';
+      if (maxSpace === spaceBottom && spaceBottom > tooltipHeight) return 'bottom';
+      if (maxSpace === spaceLeft && spaceLeft > tooltipWidth) return 'left';
+      if (maxSpace === spaceRight && spaceRight > tooltipWidth) return 'right';
+      
+      // Default to bottom if no clear choice
+      return 'bottom';
     };
     
     updatePosition();
     
-    // Update position on window resize
+    // Update position on window resize or scroll
     window.addEventListener('resize', updatePosition);
-    return () => window.removeEventListener('resize', updatePosition);
+    window.addEventListener('scroll', updatePosition, true);
+    
+    return () => {
+      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('scroll', updatePosition, true);
+    };
   }, [isActive, currentStep, steps]);
   
   if (!isActive || steps.length === 0) {
@@ -100,38 +180,35 @@ const TutorialSteps: React.FC = () => {
     return null;
   }
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
-      <div className="absolute inset-0 bg-black bg-opacity-50 pointer-events-auto" onClick={skipTutorial}></div>
+  return createPortal(
+    <div className="fixed inset-0 z-50 pointer-events-none">
+      <div className="absolute inset-0 bg-black bg-opacity-30 pointer-events-auto" onClick={skipTutorial}></div>
       
       <div 
-        className="absolute bg-white rounded-lg shadow-xl p-4 w-80 pointer-events-auto animate-fade-in"
-        style={{ 
-          top: `${position.top}px`, 
-          left: `${position.left}px`, 
-          transform: 'translate(-50%, -50%)' 
-        }}
+        ref={tooltipRef}
+        className="fixed bg-white rounded-lg shadow-xl p-5 w-80 pointer-events-auto animate-fade-in"
+        style={tooltipStyle}
       >
         <button 
           onClick={skipTutorial}
-          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 bg-white rounded-full p-1"
           aria-label="Cerrar tutorial"
         >
           <X size={18} />
         </button>
         
         <div className="mb-4">
-          <h3 className="text-lg font-medium text-campo-brown">{currentTutorialStep.title}</h3>
-          <p className="text-sm text-gray-600 mt-1">{currentTutorialStep.content}</p>
+          <h3 className="text-lg font-medium text-choco-green">{currentTutorialStep.title}</h3>
+          <p className="text-sm text-gray-600 mt-2">{currentTutorialStep.content}</p>
         </div>
         
         <div className="flex justify-between items-center">
-          <div className="flex space-x-1">
+          <div className="flex space-x-2">
             {steps.map((_, index) => (
               <div
                 key={index}
-                className={`h-2 w-2 rounded-full ${
-                  index === currentStep ? 'bg-campo-brown' : 'bg-gray-300'
+                className={`h-2 w-2 rounded-full transition-colors ${
+                  index === currentStep ? 'bg-choco-green' : 'bg-gray-300'
                 }`}
               />
             ))}
@@ -141,7 +218,7 @@ const TutorialSteps: React.FC = () => {
             {currentStep > 0 && (
               <button
                 onClick={prevStep}
-                className="px-3 py-1 text-xs border border-campo-brown text-campo-brown rounded hover:bg-campo-cream"
+                className="px-3 py-1 text-xs border border-choco-blue text-choco-blue rounded-md hover:bg-choco-blue hover:bg-opacity-10 transition-colors"
               >
                 Anterior
               </button>
@@ -150,14 +227,14 @@ const TutorialSteps: React.FC = () => {
             {currentStep < steps.length - 1 ? (
               <button
                 onClick={nextStep}
-                className="px-3 py-1 text-xs bg-campo-brown text-white rounded hover:bg-opacity-90"
+                className="px-3 py-1 text-xs bg-choco-green text-white rounded-md hover:bg-opacity-90 transition-colors"
               >
                 Siguiente
               </button>
             ) : (
               <button
                 onClick={skipTutorial}
-                className="px-3 py-1 text-xs bg-campo-green text-white rounded hover:bg-opacity-90"
+                className="px-3 py-1 text-xs bg-choco-gold text-choco-dark rounded-md hover:bg-opacity-90 transition-colors font-medium"
               >
                 ¡Entendido!
               </button>
@@ -167,15 +244,23 @@ const TutorialSteps: React.FC = () => {
         
         {/* Arrow indicator */}
         <div
-          className={`absolute w-4 h-4 bg-white transform rotate-45 ${
-            arrowPosition === 'top' ? 'top-0 left-1/2 -translate-x-1/2 -translate-y-1/2' :
-            arrowPosition === 'bottom' ? 'bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2' :
-            arrowPosition === 'left' ? 'left-0 top-1/2 -translate-x-1/2 -translate-y-1/2' :
-            'right-0 top-1/2 translate-x-1/2 -translate-y-1/2'
-          }`}
+          className="absolute w-4 h-4 bg-white"
+          style={arrowStyle}
         />
       </div>
-    </div>
+      
+      {/* Highlight element */}
+      <div className="absolute" style={{
+        top: document.querySelector(currentTutorialStep.target)?.getBoundingClientRect().top,
+        left: document.querySelector(currentTutorialStep.target)?.getBoundingClientRect().left,
+        width: document.querySelector(currentTutorialStep.target)?.getBoundingClientRect().width,
+        height: document.querySelector(currentTutorialStep.target)?.getBoundingClientRect().height,
+        boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.5)',
+        borderRadius: '4px',
+        pointerEvents: 'none',
+      }} />
+    </div>,
+    document.body
   );
 };
 

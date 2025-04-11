@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,35 +7,35 @@
 
 @layer base {
   :root {
-    --background: 36 30% 97%;
-    --foreground: 34 17% 18%;
+    --background: 40 33% 98%;
+    --foreground: 30 9% 18%;
 
-    --card: 36 33% 99%;
-    --card-foreground: 34 17% 18%;
+    --card: 40 33% 99%;
+    --card-foreground: 30 9% 18%;
 
-    --popover: 36 33% 99%;
-    --popover-foreground: 34 17% 18%;
+    --popover: 40 33% 99%;
+    --popover-foreground: 30 9% 18%;
 
-    --primary: 27 41% 39%;
-    --primary-foreground: 36 33% 99%;
+    --primary: 124 55% 24%;
+    --primary-foreground: 40 33% 99%;
 
-    --secondary: 146 30% 30%;
-    --secondary-foreground: 36 33% 99%;
+    --secondary: 201 97% 37%;
+    --secondary-foreground: 40 33% 99%;
 
-    --accent: 21 67% 51%;
-    --accent-foreground: 36 33% 99%;
+    --accent: 43 96% 58%;
+    --accent-foreground: 30 9% 18%;
 
-    --muted: 36 17% 91%;
-    --muted-foreground: 34 9% 46%;
+    --muted: 40 17% 93%;
+    --muted-foreground: 30 9% 46%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 36 33% 99%;
+    --destructive: 0 68% 47%;
+    --destructive-foreground: 40 33% 99%;
 
-    --border: 34 15% 88%;
-    --input: 34 15% 88%;
-    --ring: 27 41% 39%;
+    --border: 30 15% 88%;
+    --input: 30 15% 88%;
+    --ring: 124 55% 24%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -48,33 +48,33 @@
   }
 
   .dark {
-    --background: 34 17% 12%;
-    --foreground: 36 33% 99%;
+    --background: 30 9% 10%;
+    --foreground: 40 33% 99%;
 
-    --card: 34 17% 16%;
-    --card-foreground: 36 33% 99%;
+    --card: 30 9% 14%;
+    --card-foreground: 40 33% 99%;
 
-    --popover: 34 17% 16%;
-    --popover-foreground: 36 33% 99%;
+    --popover: 30 9% 14%;
+    --popover-foreground: 40 33% 99%;
 
-    --primary: 27 41% 39%;
-    --primary-foreground: 36 33% 99%;
+    --primary: 124 55% 30%;
+    --primary-foreground: 40 33% 99%;
 
-    --secondary: 146 30% 30%;
-    --secondary-foreground: 36 33% 99%;
+    --secondary: 201 97% 45%;
+    --secondary-foreground: 40 33% 99%;
 
-    --accent: 21 67% 51%;
-    --accent-foreground: 36 33% 99%;
+    --accent: 43 96% 50%;
+    --accent-foreground: 30 9% 10%;
 
-    --muted: 34 17% 20%;
-    --muted-foreground: 34 9% 70%;
+    --muted: 30 9% 20%;
+    --muted-foreground: 30 9% 70%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 36 33% 99%;
+    --destructive: 0 68% 51%;
+    --destructive-foreground: 40 33% 99%;
 
-    --border: 34 17% 25%;
-    --input: 34 17% 25%;
-    --ring: 27 41% 39%;
+    --border: 30 9% 25%;
+    --input: 30 9% 25%;
+    --ring: 124 55% 30%;
   }
 }
 
@@ -88,7 +88,7 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif;
+    @apply font-serif tracking-wide;
   }
 }
 
@@ -98,30 +98,34 @@
   }
   
   .btn-primary {
-    @apply bg-campo-brown text-white rounded-md px-4 py-2 hover:bg-opacity-90 transition-all;
+    @apply bg-choco-green text-white rounded-md px-4 py-2 hover:bg-opacity-90 transition-all;
   }
   
   .btn-secondary {
-    @apply bg-campo-green text-white rounded-md px-4 py-2 hover:bg-opacity-90 transition-all;
+    @apply bg-choco-blue text-white rounded-md px-4 py-2 hover:bg-opacity-90 transition-all;
   }
   
   .btn-accent {
-    @apply bg-campo-terracotta text-white rounded-md px-4 py-2 hover:bg-opacity-90 transition-all;
+    @apply bg-choco-red text-white rounded-md px-4 py-2 hover:bg-opacity-90 transition-all;
   }
   
   .btn-outline {
-    @apply border border-campo-brown text-campo-brown rounded-md px-4 py-2 hover:bg-campo-brown hover:bg-opacity-10 transition-all;
+    @apply border border-choco-green text-choco-green rounded-md px-4 py-2 hover:bg-choco-green hover:bg-opacity-10 transition-all;
   }
 
   .card-product {
-    @apply bg-white rounded-lg shadow-md overflow-hidden transition-all hover:shadow-lg;
+    @apply bg-white rounded-lg shadow-md overflow-hidden transition-all hover:shadow-xl;
   }
 
   .product-tag {
-    @apply bg-campo-green text-white text-xs px-2 py-1 rounded-md;
+    @apply bg-choco-blue text-white text-xs px-2 py-1 rounded-md;
   }
   
   .badge {
     @apply inline-flex items-center px-2 py-1 rounded-full text-xs font-medium;
+  }
+  
+  .section-title {
+    @apply text-3xl font-bold relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:transform after:-translate-x-1/2 after:w-20 after:h-1 after:bg-choco-gold;
   }
 }

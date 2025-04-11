@@ -30,7 +30,7 @@ const Header = () => {
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
-              <span className="text-campo-brown font-serif text-2xl font-bold">Campo<span className="text-campo-green">Artesano</span></span>
+              <span className="text-choco-brown font-serif text-2xl font-bold">Artesanías<span className="text-choco-green">Chocó</span></span>
             </Link>
           </div>
 
@@ -40,13 +40,13 @@ const Header = () => {
               <input
                 type="search"
                 placeholder="Buscar productos..."
-                className="w-full rounded-full border border-gray-300 py-2 px-4 focus:outline-none focus:ring-1 focus:ring-campo-brown"
+                className="w-full rounded-full border border-gray-300 py-2 px-4 focus:outline-none focus:ring-1 focus:ring-choco-green"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               <button
                 type="submit"
-                className="absolute right-0 top-0 mt-2 mr-3 text-gray-400 hover:text-campo-brown"
+                className="absolute right-0 top-0 mt-2 mr-3 text-gray-400 hover:text-choco-green"
               >
                 <Search size={20} />
               </button>
@@ -57,35 +57,35 @@ const Header = () => {
           <nav className="hidden md:flex items-center space-x-4">
             {isAuthenticated ? (
               <div className="relative group">
-                <button className="flex items-center gap-2 text-campo-dark hover:text-campo-brown transition-colors">
+                <button className="flex items-center gap-2 text-choco-dark hover:text-choco-green transition-colors">
                   <User size={20} />
                   <span>{user?.name}</span>
                 </button>
                 <div className="absolute right-0 w-48 mt-2 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                   <div className="py-1">
-                    <Link to="/perfil" className="block px-4 py-2 text-sm text-campo-dark hover:bg-campo-cream">Mi Perfil</Link>
-                    <Link to="/pedidos" className="block px-4 py-2 text-sm text-campo-dark hover:bg-campo-cream">Mis Pedidos</Link>
-                    <button onClick={logout} className="w-full text-left block px-4 py-2 text-sm text-campo-dark hover:bg-campo-cream">Cerrar Sesión</button>
+                    <Link to="/perfil" className="block px-4 py-2 text-sm text-choco-dark hover:bg-choco-cream">Mi Perfil</Link>
+                    <Link to="/pedidos" className="block px-4 py-2 text-sm text-choco-dark hover:bg-choco-cream">Mis Pedidos</Link>
+                    <button onClick={logout} className="w-full text-left block px-4 py-2 text-sm text-choco-dark hover:bg-choco-cream">Cerrar Sesión</button>
                   </div>
                 </div>
               </div>
             ) : (
-              <Link to="/login" className="text-campo-dark hover:text-campo-brown transition-colors flex items-center">
+              <Link to="/login" className="text-choco-dark hover:text-choco-green transition-colors flex items-center">
                 <User size={20} className="mr-1" />
                 <span>Iniciar Sesión</span>
               </Link>
             )}
-            <Link to="/carrito" className="cart-icon relative text-campo-dark hover:text-campo-brown transition-colors">
+            <Link to="/carrito" className="cart-icon relative text-choco-dark hover:text-choco-green transition-colors">
               <ShoppingCart size={24} />
               {itemCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-campo-terracotta text-white rounded-full h-5 w-5 flex items-center justify-center text-xs">
+                <span className="absolute -top-2 -right-2 bg-choco-red text-white rounded-full h-5 w-5 flex items-center justify-center text-xs">
                   {itemCount}
                 </span>
               )}
             </Link>
             <button 
               onClick={startTutorial} 
-              className="text-xs bg-campo-cream border border-campo-brown text-campo-brown rounded-full px-3 py-1 hover:bg-campo-brown hover:text-white transition-colors"
+              className="text-xs bg-choco-cream border border-choco-gold text-choco-brown rounded-full px-3 py-1 hover:bg-choco-gold hover:text-choco-dark transition-colors"
             >
               ¿Nuevo aquí?
             </button>
@@ -93,15 +93,15 @@ const Header = () => {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
-            <Link to="/carrito" className="cart-icon relative text-campo-dark hover:text-campo-brown mr-4">
+            <Link to="/carrito" className="cart-icon relative text-choco-dark hover:text-choco-green mr-4">
               <ShoppingCart size={24} />
               {itemCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-campo-terracotta text-white rounded-full h-5 w-5 flex items-center justify-center text-xs">
+                <span className="absolute -top-2 -right-2 bg-choco-red text-white rounded-full h-5 w-5 flex items-center justify-center text-xs">
                   {itemCount}
                 </span>
               )}
             </Link>
-            <button onClick={toggleMenu} className="text-gray-600">
+            <button onClick={toggleMenu} className="text-choco-dark">
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
@@ -114,13 +114,13 @@ const Header = () => {
               <input
                 type="search"
                 placeholder="Buscar productos..."
-                className="w-full rounded-full border border-gray-300 py-2 px-4 focus:outline-none focus:ring-1 focus:ring-campo-brown"
+                className="w-full rounded-full border border-gray-300 py-2 px-4 focus:outline-none focus:ring-1 focus:ring-choco-green"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               <button
                 type="submit"
-                className="absolute right-0 top-0 mt-2 mr-3 text-gray-400 hover:text-campo-brown"
+                className="absolute right-0 top-0 mt-2 mr-3 text-gray-400 hover:text-choco-green"
               >
                 <Search size={20} />
               </button>
@@ -132,41 +132,41 @@ const Header = () => {
         {isMenuOpen && (
           <nav className="md:hidden mt-4 pb-4 border-t border-gray-200 pt-4">
             <div className="flex flex-col space-y-3">
-              <Link to="/" className="text-campo-dark hover:text-campo-brown" onClick={toggleMenu}>
+              <Link to="/" className="text-choco-dark hover:text-choco-green" onClick={toggleMenu}>
                 Inicio
               </Link>
-              <Link to="/productos" className="text-campo-dark hover:text-campo-brown" onClick={toggleMenu}>
+              <Link to="/productos" className="text-choco-dark hover:text-choco-green" onClick={toggleMenu}>
                 Productos
               </Link>
-              <Link to="/artesanos" className="text-campo-dark hover:text-campo-brown" onClick={toggleMenu}>
+              <Link to="/artesanos" className="text-choco-dark hover:text-choco-green" onClick={toggleMenu}>
                 Artesanos
               </Link>
-              <Link to="/nosotros" className="text-campo-dark hover:text-campo-brown" onClick={toggleMenu}>
+              <Link to="/nosotros" className="text-choco-dark hover:text-choco-green" onClick={toggleMenu}>
                 Nosotros
               </Link>
               {isAuthenticated ? (
                 <>
-                  <Link to="/perfil" className="text-campo-dark hover:text-campo-brown" onClick={toggleMenu}>
+                  <Link to="/perfil" className="text-choco-dark hover:text-choco-green" onClick={toggleMenu}>
                     Mi Perfil
                   </Link>
-                  <Link to="/pedidos" className="text-campo-dark hover:text-campo-brown" onClick={toggleMenu}>
+                  <Link to="/pedidos" className="text-choco-dark hover:text-choco-green" onClick={toggleMenu}>
                     Mis Pedidos
                   </Link>
                   <button 
                     onClick={() => { logout(); toggleMenu(); }} 
-                    className="text-left text-campo-dark hover:text-campo-brown"
+                    className="text-left text-choco-dark hover:text-choco-green"
                   >
                     Cerrar Sesión
                   </button>
                 </>
               ) : (
-                <Link to="/login" className="text-campo-dark hover:text-campo-brown" onClick={toggleMenu}>
+                <Link to="/login" className="text-choco-dark hover:text-choco-green" onClick={toggleMenu}>
                   Iniciar Sesión
                 </Link>
               )}
               <button 
                 onClick={() => { startTutorial(); toggleMenu(); }} 
-                className="text-xs bg-campo-cream border border-campo-brown text-campo-brown rounded-full px-3 py-1 hover:bg-campo-brown hover:text-white transition-colors self-start"
+                className="text-xs bg-choco-cream border border-choco-gold text-choco-brown rounded-full px-3 py-1 hover:bg-choco-gold hover:text-choco-dark transition-colors self-start"
               >
                 ¿Nuevo aquí?
               </button>
